@@ -37,11 +37,11 @@
 module Btce
   class TradeAPI < API
     if File.exists? 'btce-api-key.yml'
-      KEY = YAML::load File.open 'btce-api-key.yml'
+      # KEY = YAML::load File.open 'btce-api-key.yml'
 
       class << self
-        def new_from_keyfile
-          new key: KEY["key"], secret: KEY["secret"]
+        def new_from_keyfile(api_key, api_secret)
+          new key: api_key, secret: api_secret
         end
       end
     end
@@ -59,6 +59,10 @@ module Btce
       raise ArgumentError unless opts.has_key?(:key) and opts.has_key?(:secret)
       @key = opts[:key]
       @secret = opts[:secret]
+    end
+
+    def self.initialize_api(api_key, api_secret)
+      new key: api_key, secret: api_secret
     end
 
     def sign(params)
